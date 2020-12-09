@@ -12,6 +12,7 @@ let mySanta = new Santa(sweden);
 
 const express = require('express');
 const socketIO = require('socket.io');
+const riveScript = require('rivescript');
 
 const PORT = process.env.PORT || 3000;
 const INDEX = '/main_app_page.html';
