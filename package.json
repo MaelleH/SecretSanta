@@ -1,0 +1,22 @@
+{
+  "name": "ReseauEtFlux",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bufferutil": "^4.0.2",
+    "express": "^4.17.1",
+    "socket.io": "^3.0.4",
+    "utf-8-validate": "^5.0.3",
+    "ws": "^7.4.1"
+  },
+  "engines": {
+    "node": "12.17.x"
+  }
+}
