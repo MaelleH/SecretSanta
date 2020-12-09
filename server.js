@@ -27,16 +27,15 @@ const io = socketIO(server);
 
 io.on('connection', (socket) => {
 	console.log('Client connected');
-	socket.on('disconnect', () => console.log('Client disconnected'));
-});
+	socket.on('messageSanta', (data) => {
+		console.log(data + " cétait papa  ");
+		bot.reply("oui", data).then(function(reply) {
+			console.log(reply + "replay  ");
+			io.emit('messageSantaReply', reply);
+		});
 
-io.on('messageSanta', (data) => {
-	console.log(data + " cétait papa prout ");
-	bot.reply("oui", "Hello, bot!").then(function(reply) {
-		console.log(reply + "prout prout prout ");
-		io.emit('messageSantaReply', reply);
 	});
-
+	socket.on('disconnect', () => console.log('Client disconnected'));
 });
 
 
