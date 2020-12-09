@@ -11,18 +11,30 @@ let mySanta = new Santa(sweden);
 
 
 const express = require('express');
-const socketIO = require('socket.io');
 const riveScript = require('rivescript');
+
+const server = express()
+	.use((req, res) => res.sendFile(INDEX, { root: __dirname }))
+	.listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+
+const io = require('socket.io')(server, {
+	handlePreflightRequest: function (req, res) {
+		var headers = {
+			'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+			'Access-Control-Allow-Origin': 'http://localhost:3001',
+			'Access-Control-Allow-Credentials': true
+		};
+		res.writeHead(200, headers);
+		res.end();
+	}
+});
 
 const PORT = process.env.PORT || 3000;
 const INDEX = '/main_app_page.html';
 
-const server = express()
-  .use((req, res) => res.sendFile(INDEX, { root: __dirname }))
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
 
-const io = socketIO(server);
 
 io.on('connection', (socket) => {
   console.log('Client connected');
