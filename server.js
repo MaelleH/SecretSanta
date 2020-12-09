@@ -32,6 +32,11 @@ io.on('connection', (socket) => {
 
 io.on('messageSanta', (data) => {
 	console.log(data);
+
+	bot.reply("oui", "Hello, bot!").then(function(reply) {
+		io.emit('santa', reply);
+	});
+
 });
 
 setInterval( () => io.emit('santa', JSON.stringify(mySanta.getPosition())), 1000);
@@ -49,22 +54,7 @@ bot.loadFile("brain/myself.rive").then(loading_done).catch(loading_error);
 // the files have finished loading.
 function loading_done() {
 	console.log("Bot has finished loading!");
-
-	// Now the replies must be sorted!
 	bot.sortReplies();
-
-	// And now we're free to get a reply from the brain!
-
-	// RiveScript remembers user data by their username and can tell
-	// multiple users apart.
-	let username = "local-user";
-
-	// NOTE: the API has changed in v2.0.0 and returns a Promise now.
-	bot.reply(username, "Hello, bot!").then(function(reply) {
-		console.log("The bot says: " + reply);
-	});
-
-
 }
 
 // It's good to catch errors too!
