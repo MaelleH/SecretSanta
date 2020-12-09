@@ -31,10 +31,9 @@ io.on('connection', (socket) => {
 });
 
 io.on('messageSanta', (data) => {
-	console.log(data);
 
 	bot.reply("oui", "Hello, bot!").then(function(reply) {
-		io.emit('santa', reply);
+		io.emit('messagSanta', reply);
 	});
 
 });
