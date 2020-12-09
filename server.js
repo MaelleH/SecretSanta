@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
 io.on('messageSanta', (data) => {
 
 	bot.reply("oui", "Hello, bot!").then(function(reply) {
-		io.emit('messagSanta', reply);
+		io.emit('messageSanta', reply);
 	});
 
 });

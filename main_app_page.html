@@ -125,7 +125,10 @@
 
             function sendMessage(){
                 var textSanta = document.getElementById("textSanta");
-                socket.emit('messageSanta', { 'message': textSanta.textContent});
+                console.log("Message pour santa ! : " + textSanta.textContent)
+                socket.emit('messageSanta', textSanta.textContent);
+
+                form.reset()
             }
 
             socket.on('messageSanta', (message) => {
