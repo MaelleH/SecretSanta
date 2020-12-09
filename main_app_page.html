@@ -23,17 +23,22 @@
             let socket = io('https://boiling-fortress-23587.herokuapp.com/');
             let el;
 
-
             window.addEventListener("load", main);
             var macarte = null;
             let markers = [];
 
+            var santaHouse;
+            var santaHouseLong = 21.040181;
+            var santaHouseLat =  67.498454;
+
             var santaIcon = L.icon({
-                iconUrl: 'catSanta.png',
-                iconSize: [20, 20]
+                iconUrl: 'https://cdn4.iconfinder.com/data/icons/scenarium-vol-12/128/011_cat_santa_xmas_gift-512.png',
+                iconSize: [50, 50]
             });
-
-
+            var santaHouseIcon = L.icon({
+                iconUrl: 'https://i.pinimg.com/originals/7a/33/ee/7a33ee70357409c3bf6783fe4137fb04.png',
+                iconSize: [100, 100]
+            });
 
             function main() {
                 initMap()
@@ -50,20 +55,31 @@
                     maxZoom: 20
                 }).addTo(macarte);
 
+                santaHouse = L.marker([santaHouseLat, santaHouseLong], {icon: santaHouseIcon}).addTo(macarte);
+                santaHouse.bindPopup("<p>Santa House!</p>");
+                markers.push(santaHouse);
+
                 socket.on('santa', (santaString) => {
                     el = document.getElementById('santa-position');
                     el.innerHTML = 'Santa position: ' + santaString;
                     santaLoc = JSON.parse(santaString)
                     console.log(santaLoc.latitude)
+
                     var marker = L.marker([santaLoc.latitude, santaLoc.longitude], {icon: santaIcon}).addTo(macarte);
-                    // Nous ajoutons la popup. A noter que son contenu (ici la variable personne) peut être du HTML
-                    //marker.bindPopup(personne);
                     markers.push(marker);
+
+                    setSantaHousePos(santaLoc.latitude,santaLoc.longitude);
 
                     var group = new L.featureGroup(markers); // Nous créons le groupe des marqueurs pour adapter le zoom
                     macarte.fitBounds(group.getBounds().pad(0.5)); // Nous demandons à ce que tous les marqueurs soient visibles, et ajoutons un padding (pad(0.5)) pour que les marqueurs ne soient pas coupés
 
                 })
+            }
+
+            function setSantaHousePos(latitude, longitude){
+                santaHouseLat = (santaHouseLat * markers.length + latitude) / (markers.length + 1);
+                santaHouseLong = (santaHouseLong * markers.length + longitude) / (markers.length + 1);
+                santaHouse.setLatLng([santaHouseLat,santaHouseLong]);
             }
         </script>
 
