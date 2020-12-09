@@ -2,7 +2,7 @@
   "name": "ReseauEtFlux",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "start": "node server.js"
   },
@@ -10,9 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bufferutil": "^4.0.2",
     "express": "^4.17.1",
-    "socket.io": "^3.0.4",
+    "socket.io": "^2.3.0",
     "utf-8-validate": "^5.0.3",
     "ws": "^7.4.1",
     "rivescript": "^2.1.0"
