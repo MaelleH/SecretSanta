@@ -124,9 +124,9 @@
             form.addEventListener('submit', handleForm);
 
             function sendMessage(){
-                var textSanta = document.getElementById("textSanta");
-                console.log("Message pour santa ! : " + textSanta.textContent)
-                socket.emit('messageSanta', textSanta.textContent);
+                var textSanta = document.getElementById("textSanta").value;
+                console.log("Message pour santa ! : " + textSanta)
+                socket.emit('messageSanta', textSanta);
 
                 form.reset()
             }
