@@ -39,19 +39,13 @@ io.on('messageSanta', (data) => {
 
 });
 
+
 setInterval( () => io.emit('santa', JSON.stringify(mySanta.getPosition())), 1000);
-
-
 
 var bot = new riveScript();
 
-// Load an individual file.
 bot.loadFile("brain/myself.rive").then(loading_done).catch(loading_error);
 
-// All file loading operations are asynchronous, so you need handlers
-// to catch when they've finished. If you use loadDirectory (or loadFile
-// with multiple file names), the success function is called only when ALL
-// the files have finished loading.
 function loading_done() {
 	console.log("Bot has finished loading!");
 	bot.sortReplies();
@@ -61,6 +55,8 @@ function loading_done() {
 function loading_error(error, filename, lineno) {
 	console.log("Error when loading files: " + error);
 }
+
+
 
 
 

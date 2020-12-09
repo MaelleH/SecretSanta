@@ -39,7 +39,7 @@
 
         <div id = "chat">
             <div id = "history"></div>
-            <form id = "textSantaForm" onsubmit = "sendMessage()">
+            <form id = "textSantaForm">
                 <input id = "textSanta" type = "text" placeholder = "Wanna write to santa?">
                 <input type = "submit">
             </form>
@@ -112,34 +112,25 @@
 
 
             // Le chat
+            // Le chat
 
             var form = document.getElementById("textSantaForm");
+
             function handleForm(event) {
                 event.preventDefault();
+                sendMessage();
             }
+
             form.addEventListener('submit', handleForm);
 
             function sendMessage(){
                 var textSanta = document.getElementById("textSanta");
-
                 socket.emit('messageSanta', { 'message': textSanta.textContent});
             }
 
-
-            socket.on('santa', (santaString) => {
-                santaLoc = JSON.parse(santaString)
-                console.log(santaLoc.latitude)
-
-                var marker = L.marker([santaLoc.latitude, santaLoc.longitude], {icon: santaIcon}).addTo(macarte);
-                markers.push(marker);
-
-                setSantaHousePos(santaLoc.latitude,santaLoc.longitude);
-
-                var group = new L.featureGroup(markers); // Nous créons le groupe des marqueurs pour adapter le zoom
-                macarte.fitBounds(group.getBounds().pad(0.5)); // Nous demandons à ce que tous les marqueurs soient visibles, et ajoutons un padding (pad(0.5)) pour que les marqueurs ne soient pas coupés
-
+            socket.on('messageSanta', (message) => {
+                console.log("Message from santa ! " + message)
             })
-
 
         </script>
 
