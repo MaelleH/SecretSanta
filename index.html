@@ -21,13 +21,4 @@
       <p>By the way, this app is hosted on heroku. Find out <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">here</a> how I did it. Maybe you could create your own web service on a socket? UFO's appearances? Elvis spoting?</p>
     
   </body>
-  <script !src="">
-      var socket = io();
-      var el;
-
-      socket.on('time', function(timeString) {
-          el = document.getElementById('server-time')
-          el.innerHTML = 'Server time: ' + timeString;
-      });
-  </script>
 </html>
