@@ -114,6 +114,8 @@
 
             // Le chat
 
+
+
             var form = document.getElementById("textSantaForm");
 
             function handleForm(event) {
@@ -131,7 +133,7 @@
                 form.reset()
             }
 
-            socket.on('messageSanta', (message) => {
+            socket.on('messageSantaReply', (message) => {
                 console.log("Message from santa ! " + message)
             })
 

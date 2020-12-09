@@ -35,7 +35,7 @@ io.on('messageSanta', (data) => {
 	console.log(data + " cétait papa prout ");
 	bot.reply("oui", "Hello, bot!").then(function(reply) {
 		console.log(reply + "prout prout prout ");
-		io.emit('messageSanta', reply);
+		io.emit('messageSantaReply', reply);
 	});
 
 });
