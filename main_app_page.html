@@ -39,7 +39,7 @@
 
         <div id = "chat">
             <div id = "history"></div>
-            <form onsubmit = "sendMessage()">
+            <form id = "textSantaForm" onsubmit = "sendMessage()">
                 <input id = "textSanta" type = "text" placeholder = "Wanna write to santa?">
                 <input type = "submit">
             </form>
@@ -51,7 +51,6 @@
         <script type="text/javascript">
 
             let socket = io();
-            let el;
 
             window.addEventListener("load", main);
             var macarte = null;
@@ -90,8 +89,6 @@
                 markers.push(santaHouse);
 
                 socket.on('santa', (santaString) => {
-                    el = document.getElementById('santa-position');
-                    el.innerHTML = 'Santa position: ' + santaString;
                     santaLoc = JSON.parse(santaString)
                     console.log(santaLoc.latitude)
 
@@ -115,6 +112,13 @@
 
 
             // Le chat
+
+            var form = document.getElementById("textSantaForm");
+            function handleForm(event) {
+                event.preventDefault();
+            }
+            form.addEventListener('submit', handleForm);
+
             function sendMessage(){
                 var textSanta = document.getElementById("textSanta");
 

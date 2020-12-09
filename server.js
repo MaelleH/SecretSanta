@@ -30,11 +30,15 @@ io.on('connection', (socket) => {
 	socket.on('disconnect', () => console.log('Client disconnected'));
 });
 
+io.on('messageSanta', (data) => {
+	console.log(data);
+});
+
 setInterval( () => io.emit('santa', JSON.stringify(mySanta.getPosition())), 1000);
 
 
 
-var bot = new RiveScript();
+var bot = new riveScript();
 
 // Load an individual file.
 bot.loadFile("brain/myself.rive").then(loading_done).catch(loading_error);
@@ -58,11 +62,6 @@ function loading_done() {
 	// NOTE: the API has changed in v2.0.0 and returns a Promise now.
 	bot.reply(username, "Hello, bot!").then(function(reply) {
 		console.log("The bot says: " + reply);
-	});
-
-
-	io.on('messageSanta', (data) => {
-		console.log(data);
 	});
 
 
