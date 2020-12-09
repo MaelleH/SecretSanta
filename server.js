@@ -8,6 +8,8 @@ let sweden = {
 	};
 
 let mySanta = new Santa(sweden);
+const PORT = process.env.PORT || 3000;
+const INDEX = '/main_app_page.html';
 
 
 const express = require('express');
@@ -22,7 +24,7 @@ const io = require('socket.io')(server, {
 	handlePreflightRequest: function (req, res) {
 		var headers = {
 			'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-			'Access-Control-Allow-Origin': 'http://localhost:3001',
+			'Access-Control-Allow-Origin': 'http://localhost:3000',
 			'Access-Control-Allow-Credentials': true
 		};
 		res.writeHead(200, headers);
@@ -30,8 +32,6 @@ const io = require('socket.io')(server, {
 	}
 });
 
-const PORT = process.env.PORT || 3000;
-const INDEX = '/main_app_page.html';
 
 
 
