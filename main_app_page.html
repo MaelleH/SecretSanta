@@ -3,6 +3,15 @@
     <head>
         <title>Client en  local</title>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
         <style type="text/css">
             #map{
                 height:80vh;
@@ -15,11 +24,16 @@
                 display: flex;
                 flex-direction: column;
                 height: 70vh;
-                border: 2px solid #c40e0e;
+                border: 3px solid #c40e0e;
                 margin: 2vw;
+                background-color: white;
             }
 
             body{
+                background-image: url(https://images.pexels.com/photos/1303085/pexels-photo-1303085.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260);
+            }
+
+            section{
                 display: flex;
                 justify-content: space-between;
                 margin: 2vw;
@@ -27,23 +41,71 @@
 
             #history{
                 flex-grow: 8;
+                padding: 1vw;
+                overflow: auto;
+            }
+
+            #textSantaForm{
+                display: flex;
+                padding: 1vw;
+            }
+
+            #textSanta{
+                flex-grow: 10;
+            }
+            .cardMessage{
+                display: flex;
+                align-items: center;
+                padding: 0 1vw 0 1vw;
+                background: #c40e0e;
+                border-radius: 50px;
+                color: white;
+                margin: 0.5vh 0 0.5vh 0;
+            }
+
+            .imageSanta{
+                flex-grow: 1;
+                max-width: 4em;
+                max-height: 4em;
+                border: 2px solid #c40e0e;
+                border-radius: 50px;
+            }
+
+            .cardMessageChild{
+                background: #ffffff;
+                text-align: right;
+                color:  #c40e0e;
+            }
+
+            .textMessageChild{
+                flex-grow: 10;
+                padding-right: 1vw;
+                padding-left: 1vw;
+                text-align: right;
+                color: #c40e0e;
             }
         </style>
 
     </head>
     <body>
+        <header>
+            <div style="padding: 3vh;background-color: #c40e0e;color: white;text-align: center;font-size: 3em;font-weight: bold;">Where is santa?</div>
+        </header>
+        <section>
+            <div>
+                <div id = "map"></div>
+            </div>
 
-        <div>
-            <div id = "map"></div>
-        </div>
+            <div id = "chat">
+                <div style="padding: 1vh;background-color: #c40e0e;color: white;text-align: center;font-size: 1.75em;font-weight: bold;">Come talk with santa !</div>
+                <div id = "history"></div>
+                <form id="textSantaForm">
+                    <input id = "textSanta" type = "text" placeholder = "Wanna write to santa?">
+                    <input style="background-color: #c40e0e;color: white;" type = "submit" value="Send">
+                </form>
+            </div>
+        </section>
 
-        <div id = "chat">
-            <div id = "history"></div>
-            <form id="textSantaForm">
-                <input id = "textSanta" type = "text" placeholder = "Wanna write to santa?">
-                <input type = "submit">
-            </form>
-        </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.0/socket.io.js"></script>
         <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
@@ -124,6 +186,7 @@
 
             function sendMessage(){
                 var textSanta = document.getElementById("textSanta").value;
+                addCard(false, textSanta);
                 console.log("Message pour santa ! : " + textSanta)
                 socket.emit('messageSanta', textSanta);
 
@@ -132,24 +195,30 @@
 
             socket.on('messageSantaReply', (message) => {
                 console.log("Message from santa ! " + message)
+                addCard(true, message);
             })
 
 
             function addCard(isSanta, messageSent){
                 if(isSanta){
-                    return "<div class='cardMessage'>" +
-                                "<img src='catSanta.png'>"+
+                    document.getElementById("history").innerHTML += "<div class='cardMessage'>" +
+                                "<img class='imageSanta' src='https://cdn4.iconfinder.com/data/icons/scenarium-vol-12/128/011_cat_santa_xmas_gift-512.png' alt='santa'>"+
                                 "<h4>"+
                                     messageSent+
                                 "</h4>"+
-                            "</div>"
+                            "</div>";
                 }else{
-                    return "<div class='cardMessage'>" +
-                            "<h4>"+
+                    document.getElementById("history").innerHTML += "<div class='cardMessage cardMessageChild'>" +
+                        "<h4 class='textMessageChild'>"+
                                 messageSent+
                             "</h4>"+
-                        "</div>"
+                        "<img class='imageSanta' src='https://icons.iconarchive.com/icons/fps.hu/free-christmas-flat-circle/512/snowman-icon.png' alt='child'>"+
+                        "</div>";
                 }
+
+                document.getElementById("history").scrollTop = document.getElementById("history").scrollHeight;
+
+
             }
 
         </script>
