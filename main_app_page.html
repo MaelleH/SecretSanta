@@ -111,11 +111,7 @@
             }
 
 
-
-
             // Le chat
-
-
 
             var form = document.getElementById("textSantaForm");
 
@@ -129,7 +125,7 @@
             function sendMessage(){
                 var textSanta = document.getElementById("textSanta").value;
                 console.log("Message pour santa ! : " + textSanta)
-                socket.emit('messageSanta', "messageSanta");
+                socket.emit('messageSanta', textSanta);
 
                 form.reset()
             }
@@ -137,6 +133,24 @@
             socket.on('messageSantaReply', (message) => {
                 console.log("Message from santa ! " + message)
             })
+
+
+            function addCard(isSanta, messageSent){
+                if(isSanta){
+                    return "<div class='cardMessage'>" +
+                                "<img src='catSanta.png'>"+
+                                "<h4>"+
+                                    messageSent+
+                                "</h4>"+
+                            "</div>"
+                }else{
+                    return "<div class='cardMessage'>" +
+                            "<h4>"+
+                                messageSent+
+                            "</h4>"+
+                        "</div>"
+                }
+            }
 
         </script>
 

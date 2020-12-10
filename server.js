@@ -28,9 +28,7 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
 	console.log('Client connected');
 	socket.on('messageSanta', (data) => {
-		console.log(data + " cétait papa  ");
 		bot.reply("oui", data).then(function(reply) {
-			console.log(reply + "replay  ");
 			io.emit('messageSantaReply', reply);
 		});
 
@@ -39,14 +37,12 @@ io.on('connection', (socket) => {
 });
 
 
-setInterval( () => io.emit('santa', JSON.stringify(mySanta.getPosition())), 1000);
+setInterval( () => io.emit('santa', JSON.stringify(mySanta.getPosition())), 3000);
 
 var bot = new riveScript();
-
 bot.loadFile("brain/myself.rive").then(loading_done).catch(loading_error);
 
 function loading_done() {
-	console.log("Bot has finished loading!");
 	bot.sortReplies();
 }
 
