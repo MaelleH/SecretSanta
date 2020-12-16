@@ -111,18 +111,18 @@
 
 
             window.addEventListener("load", main); //Ajout d'un listener sur la fenêtre
-            var macarte = null;
-            let markers = [];
+            var macarte = null; //Variable contenant la carte
+            let markers = []; //Variable contenant les markers de la carte
 
-            var santaHouse;
-            var santaHouseLong = 21.040181;
+            var santaHouse; //Variable contenant la maison de santa
+            var santaHouseLong = 21.040181; //Variables contenant les coordonnées de la maison de santa
             var santaHouseLat =  67.498454;
 
-            var santaIcon = L.icon({
+            var santaIcon = L.icon({ //Variable contenant l'icone de santa
                 iconUrl: 'https://cdn4.iconfinder.com/data/icons/scenarium-vol-12/128/011_cat_santa_xmas_gift-512.png',
                 iconSize: [50, 50]
             });
-            var santaHouseIcon = L.icon({
+            var santaHouseIcon = L.icon({ //Variable contenant l'icone de la maison de santa
                 iconUrl: 'https://i.pinimg.com/originals/7a/33/ee/7a33ee70357409c3bf6783fe4137fb04.png',
                 iconSize: [100, 100]
             });
@@ -142,18 +142,18 @@
                     maxZoom: 20
                 }).addTo(macarte);
 
-                santaHouse = L.marker([santaHouseLat, santaHouseLong], {icon: santaHouseIcon}).addTo(macarte);
+                santaHouse = L.marker([santaHouseLat, santaHouseLong], {icon: santaHouseIcon}).addTo(macarte); //Placement de la maison de santa sur la carte
                 santaHouse.bindPopup("<p>Santa House!</p>");
                 markers.push(santaHouse);
 
-                socket.on('santa', (santaString) => {
+                socket.on('santa', (santaString) => { //Lorsqu'on reçoit santa, on place un marqueur et on recalcule la position de la maison
                     santaLoc = JSON.parse(santaString)
                     console.log(santaLoc.latitude)
 
-                    var marker = L.marker([santaLoc.latitude, santaLoc.longitude], {icon: santaIcon}).addTo(macarte);
+                    var marker = L.marker([santaLoc.latitude, santaLoc.longitude], {icon: santaIcon}).addTo(macarte); // placement du marqueur
                     markers.push(marker);
 
-                    setSantaHousePos(santaLoc.latitude,santaLoc.longitude);
+                    setSantaHousePos(santaLoc.latitude,santaLoc.longitude); //changement de la position de santa
 
                     var group = new L.featureGroup(markers); // Nous créons le groupe des marqueurs pour adapter le zoom
                     macarte.fitBounds(group.getBounds().pad(0.5)); // Nous demandons à ce que tous les marqueurs soient visibles, et ajoutons un padding (pad(0.5)) pour que les marqueurs ne soient pas coupés
@@ -161,41 +161,41 @@
                 })
             }
 
-            function setSantaHousePos(latitude, longitude){
-                santaHouseLat = (santaHouseLat * markers.length + latitude) / (markers.length + 1);
+            function setSantaHousePos(latitude, longitude){ //Pour changer la position de santa
+                santaHouseLat = (santaHouseLat * markers.length + latitude) / (markers.length + 1) ; //Modification des coordonnées en fonction des précedentes et de la nouvelle
                 santaHouseLong = (santaHouseLong * markers.length + longitude) / (markers.length + 1);
-                santaHouse.setLatLng([santaHouseLat,santaHouseLong]);
+                santaHouse.setLatLng([santaHouseLat,santaHouseLong]); //on modifie alors les coordonnées
             }
 
 
             // Le chat
 
-            var form = document.getElementById("textSantaForm");
+            var form = document.getElementById("textSantaForm"); //Récupération du formulaire de chat
 
-            function handleForm(event) {
-                event.preventDefault();
-                sendMessage();
+            function handleForm(event) { // On gére l'évenemetn du form
+                event.preventDefault(); //On empêche le refresh de la page
+                sendMessage(); // On envoie le message a santa
             }
 
-            form.addEventListener('submit', handleForm);
+            form.addEventListener('submit', handleForm); //Ajout d'un listener pour le formulaire pour forcer l'appel d'handleforme sans refresh
 
-            function sendMessage(){
-                var textSanta = document.getElementById("textSanta").value;
-                addCard(false, textSanta);
+            function sendMessage(){  //Envoi d'un message à santa
+                var textSanta = document.getElementById("textSanta").value; // récupération de la valeur de textsanta (message)
+                addCard(false, textSanta); //On ajoute le message dans le chat
                 console.log("Message pour santa ! : " + textSanta)
-                socket.emit('messageSanta', textSanta);
+                socket.emit('messageSanta', textSanta); // On envoie le message au serveur
 
-                form.reset()
+                form.reset() //On reset le form pour supprimer la valeur du texte
             }
 
-            socket.on('messageSantaReply', (message) => {
+            socket.on('messageSantaReply', (message) => { // Socket qui écoute le retour du serveur sur messageSantaReply
                 console.log("Message from santa ! " + message)
-                addCard(true, message);
+                addCard(true, message); //Ajout du message reçu dans le chat
             })
 
 
-            function addCard(isSanta, messageSent){
-                if(isSanta){
+            function addCard(isSanta, messageSent){ //Fonction permettant d'ajouter les messages dans le chat
+                if(isSanta){ //Si le message vient de santa
                     document.getElementById("history").innerHTML += "<div class='cardMessage'>" +
                                 "<img class='imageSanta' src='https://cdn4.iconfinder.com/data/icons/scenarium-vol-12/128/011_cat_santa_xmas_gift-512.png' alt='santa'>"+
                                 "<h4>"+
@@ -211,7 +211,7 @@
                         "</div>";
                 }
 
-                document.getElementById("history").scrollTop = document.getElementById("history").scrollHeight;
+                document.getElementById("history").scrollTop = document.getElementById("history").scrollHeight; //La barre scroll vers le bas pour garder le suivi du chat
 
 
             }
